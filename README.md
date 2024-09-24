@@ -1,7 +1,7 @@
 # CS440-BookManager
 
 ## Description: 
-Build a web application to manage a personal book collection. Users can add, remove, and update details about books in their collection. They should also be able to view their collection in different ways.
+A web application for managing a personal book collection. This application allows users to easily add, remove, and update details about books in their collection. Additionally, users will be able to view their collection based on different criteria, such as genre or author. The interface will provide an organized and user-friendly experience for book lovers to keep track of their collection.
 
 ## Front-End: 
 HTML, CSS, JavaScript (or lightweight front-end library)
