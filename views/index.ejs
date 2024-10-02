@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <link href="/static/styles.css" rel="stylesheet">
+      <title>Personal Library</title>
+   </head>
+   <body>
+
+<header class="navbar">
+    <div class="logo-container">
+        <img src="/static/logo.jpg" alt="Library Logo" class="header-image">
+        <h2 class="library-title">Personal Library</h2>
+    </div>
+
+    <div class="nav-profile-container">
+        <nav class="nav-links">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/create">Create</a></li>
+            </ul>
+        </nav>
+
+        <!-- Profile Icon to the Right -->
+        <div class="profile-icon">
+            <a href="/profile">
+                <img src="/static/profile.jpg" alt="Profile" class="profile-img">
+            </a>
+        </div>
+    </div>
+</header>
+
+   <h3>Your books:</h3>
+
+   <!-- Flex container for the books -->
+   <div class="book-grid">
+      <% if (bookLibrary.length === 0) { %>
+         <div class="no-books-container">
+            <p>No books available. Create a new one here!</p>
+         </div>
+      <% } else { %>
+         <% bookLibrary.forEach(function(post) { %> <!-- Remove index -->
+            <!-- Flex item for each book -->
+            <div class="book-item">
+               <img src="<%= post.coverImage ? '/uploads/' + post.coverImage : '/static/no_cover.jpg' %>" 
+                    alt="Book Cover" 
+                    class="book-cover" 
+                    style="width: 150px; height: 200px;">
+               
+               <!-- Book title under the image -->
+               <h4 class="book-title"><%= post.title %></h4>
+               <p class="author-name">By: <%= post.name %></p>
+
+               <!-- Buttons for edit, delete, and view -->
+               <div class="book-options">
+                  <a href="/edit/<%= post._id %>">
+                     <button type="button" class="edit-button">Edit</button>
+                  </a>
+
+                  <form action="/delete/<%= post._id %>" method="post" class="delete-form" style="display:inline;">      
+                     <button type="submit" class="delete-button">Delete</button>
+                  </form>
+
+                  <a href="/view/<%= post._id %>">
+                     <button type="button" class="view-button">View</button>
+                  </a>
+               </div>
+            </div>
+         <% }) %>
+      <% } %>
+   </div>
+
+<div class="create-button-container">
+   <a href="/create">
+      <button type="button" class="create-button">Create New Review</button>
+   </a>
+</div>
+
+   </body>
+</html>

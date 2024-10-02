@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/static/styles.css" rel="stylesheet" />
+    <title>View Review - <%= post.title %></title>
+  </head>
+  <body>
+    <!-- Header Section -->
+
+<header class="navbar">
+    <div class="logo-container">
+        <img src="/static/logo.jpg" alt="Library Logo" class="header-image">
+        <h2 class="library-title">Personal Library</h2>
+    </div>
+
+    <div class="nav-profile-container">
+        <nav class="nav-links">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/create">Create</a></li>
+            </ul>
+        </nav>
+
+        <!-- Profile Icon to the Right -->
+        <div class="profile-icon">
+            <a href="/profile">
+                <img src="/static/profile.jpg" alt="Profile" class="profile-img">
+            </a>
+        </div>
+    </div>
+</header>
+
+    <div class="review-container">
+      <h1>Review for "<%= post.title %>"</h1>
+      <p class="author-info"><b>Author:</b> <%= post.name %></p>
+      <p class="author-info"><b>Genre:</b> <%= post.genre %></p>
+      <p class="author-info"><b>Rating out of 10:</b> <%= post.rating %> / 10</p>
+      <p class="description"><b>Description:</b> <%= post.content %></p>
+      <p class="created-at"><b>Created At:</b> <%= post.creationTime %></p>
+    </div>
+
+    <div class="center-button">
+        <a href="/" class="button">Go Back</a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <link href="/static/styles.css" rel="stylesheet">
+   </head>
+   <body>
+<header class="navbar">
+    <div class="logo-container">
+        <img src="/static/logo.jpg" alt="Library Logo" class="header-image">
+        <h2 class="library-title">Personal Library</h2>
+    </div>
+
+    <div class="nav-profile-container">
+        <nav class="nav-links">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/create">Create</a></li>
+            </ul>
+        </nav>
+
+        <!-- Profile Icon to the Right -->
+        <div class="profile-icon">
+            <a href="/profile">
+                <img src="/static/profile.jpg" alt="Profile" class="profile-img">
+            </a>
+        </div>
+    </div>
+</header>
+
+      <h2>Create a New Book</h2>
+      
+      <!-- Added enctype="multipart/form-data" to handle file upload -->
+      <form action="/create-form" method="post" enctype="multipart/form-data">
+        <label for="title">Title:</label>
+        <br>
+        <textarea id="title" name="title" rows="1" cols="60" required></textarea>
+        <br><br>
+
+        <label for="name">Author:</label>
+        <br>
+        <textarea id="name" name="name" rows="1" cols="60" required></textarea>
+        <br><br>
+
+        <label for="genre">Genre:</label>
+        <br>
+        <textarea id="genre" name="genre" rows="8" cols="60" required></textarea>
+        <br><br>
+
+        <label for="rating">Rating:</label>
+        <br>
+        <input type="number" id="rating" name="rating" min="1" max="10" required>
+        <br><br>
+
+        <label for="content">Description:</label>
+        <br>
+        <textarea id="content" name="content" rows="8" cols="60" required></textarea>
+        <br><br>
+
+        <!-- File input for book cover upload -->
+        <label for="coverImage">Upload Book Cover:</label>
+        <br>
+        <input type="file" id="coverImage" name="coverImage" accept="image/*">
+        <br><br>
+
+        <div class="center-button">
+           <button type="submit">Submit</button>
+        </div>    
+      </form>
+   </body>
+</html>

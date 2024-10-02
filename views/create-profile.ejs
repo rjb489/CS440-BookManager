@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles.css">
+    <title>Create a New Profile</title>
+</head>
+<body>
+    <header class="navbar">
+    <div class="logo-container">
+        <img src="/static/logo.jpg" alt="Library Logo" class="header-image">
+        <h2 class="library-title">Personal Library</h2>
+    </div>
+
+    <div class="nav-profile-container">
+        <nav class="nav-links">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/create">Create</a></li>
+            </ul>
+        </nav>
+
+        <!-- Profile Icon to the Right -->
+        <div class="profile-icon">
+            <a href="/profile">
+                <img src="/static/profile.jpg" alt="Profile" class="profile-img">
+            </a>
+        </div>
+    </div>
+</header>
+<div class="form-container">
+    <form action="/create-profile" method="POST" class="profile-form">
+        <h1>Create a New Profile</h1>
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit" class="create-button">Create Profile</button>
+    </form>
+
+    <!-- Sign-up link below the form -->
+    <div class="signup-option">
+        <p>Already have an account? <a href="/login" class="signup-link">Log in here.</a></p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles.css">
+    <title>Login</title>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo-container">
+        <img src="/static/logo.jpg" alt="Library Logo" class="header-image">
+        <h2 class="library-title">Personal Library</h2>
+    </div>
+
+    <div class="nav-profile-container">
+        <nav class="nav-links">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/create">Create</a></li>
+            </ul>
+        </nav>
+
+        <div class="profile-icon">
+            <a href="/profile">
+                <img src="/static/profile.jpg" alt="Profile" class="profile-img">
+            </a>
+        </div>
+    </div>
+</header>
+
+<div class="form-container">
+    <!-- Flash Message for Errors -->
+    <% if (messages.error) { %>
+        <div class="error-message">
+            <p><%= messages.error %></p>
+        </div>
+    <% } %>
+
+    <form action="/login" method="POST" class="login-form">
+        <h1>Login</h1>
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit" class="login-button">Login</button>
+    </form>
+
+    <div class="signup-option">
+        <p>Don't have an account? <a href="/create-profile"><b>Sign up here.</b></a></p>
+    </div>
+</div>
+
+</body>
+</html>

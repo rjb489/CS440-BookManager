@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles.css">
+    <title>User Profile</title>
+</head>
+<body>
+<header class="navbar">
+    <div class="logo-container">
+        <img src="/static/logo.jpg" alt="Library Logo" class="header-image">
+        <h2 class="library-title">Personal Library</h2>
+    </div>
+
+    <div class="nav-profile-container">
+        <nav class="nav-links">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/create">Create</a></li>
+            </ul>
+        </nav>
+
+        <!-- Profile Icon to the Right -->
+        <div class="profile-icon">
+            <a href="/profile">
+                <img src="/static/profile.jpg" alt="Profile" class="profile-img">
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- Profile Information Section -->
+<div class="profile-container">
+    <h1>Your Profile</h1>
+    <p><strong>Username:</strong> <%= userProfile.username %></p>
+    <p><strong>Total Books:</strong> <%= bookCount %></p>
+</div>
+
+<!-- Link for using a different account -->
+<div class="login-option">
+    <p>Use a different account? <a href="/login" class="login-link">Click Here.</a></p>
+</div>
+
+</body>
+</html>
