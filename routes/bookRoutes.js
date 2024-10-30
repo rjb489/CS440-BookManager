@@ -152,3 +152,6 @@ router.post('/delete/:id', async (req, res) =>
     await Book.findByIdAndDelete(bookId);
     res.redirect('/');
 });
+
+export default router;
+
