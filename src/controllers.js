@@ -1,181 +1,96 @@
-// Code from Chat
-
-const Book = require('./bookModel');
-const User = require('./userModel');
-const bcrypt = require('bcrypt');
-
-// Home Page
-exports.showHomePage = (req, res) => {
-  res.redirect('/books');
+// get all books
+export const getAllBooks = async (req, res, Book) => 
+{
+	// get all the books from the database
+    await Book.find();
 };
 
-// Book Controllers
-
-// List all books
-exports.listBooks = async (req, res) => {
-  try {
-    const books = await Book.find({});
-    res.render('index', { books });
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
+// get a book by its id
+export const getBookById = async (req, res, Book) => 
+{
+	// get the book id from parameters and find in database
+    const bookId = req.params.id;
+    await Book.findById(bookId);
 };
 
-// Show form to create a new book
-exports.showCreateBookForm = (req, res) => {
-  res.render('create');
-};
+// create a new book
+export const createBook = async (req, res, Book) => 
+{
+	// get the book information from parameters
+    const { title, name, content, genre, rating, 
+    			coverImage, creationTime } = req.body;
 
-// Create a new book
-exports.createBook = async (req, res) => {
-  try {
-    const newBook = new Book(req.body);
+    // create the new book
+    const newBook = new Book({ title, name, content, 
+    			genre, rating, coverImage, creationTime });
+
+    // save to database
     await newBook.save();
-    res.redirect('/books');
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
 };
 
-// View a single book
-exports.viewBook = async (req, res) => {
-  try {
-    const book = await Book.findById(req.params.id);
-    res.render('view', { book });
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
+// update the book by id
+export const updateBook = async (req, res, Book) => 
+{
+	// get id from params and deconstruct
+    const bookId = req.params.id;
+    const updateData = req.body;
+
+    // update it to database
+    await Book.findByIdAndUpdate(bookId, updateData, { new: true });
 };
 
-// Show form to edit a book
-exports.showEditBookForm = async (req, res) => {
-  try {
-    const book = await Book.findById(req.params.id);
-    res.render('edit', { book });
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
+// delete a book
+export const deleteBook = async (req, res, Book) => 
+{
+	// get book id and delete it in database
+    const bookId = req.params.id;
+    await Book.findByIdAndDelete(bookId);
 };
 
-// Update a book
-exports.updateBook = async (req, res) => {
-  try {
-    await Book.findByIdAndUpdate(req.params.id, req.body);
-    res.redirect(`/books/${req.params.id}`);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
+// get all users
+export const getAllUsers = async (req, res, UserProfile) => 
+{
+	// find all usesrs in the database
+	await UserProfile.find().populate('books');
 };
 
-// Delete a book
-exports.deleteBook = async (req, res) => {
-  try {
-    await Book.findByIdAndDelete(req.params.id);
-    res.redirect('/books');
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
+// get user by id
+export const getUserById = async (req, res, UserProfile) => 
+{
+	// grab the id and update the database
+    const userId = req.params.id;
+    await UserProfile.findById(userId).populate('books');
 };
 
-// User Controllers
+// create the user itself
+export const createUser = async (req, res, UserProfile) => 
+{
 
-// Show registration form
-exports.showRegisterForm = (req, res) => {
-  res.render('create-profile');
-};
+	// get data from user
+    const { username, password, books } = req.body;
 
-// Register a new user
-exports.registerUser = async (req, res) => {
-  try {
-    const newUser = new User(req.body);
+    // create the new user and update that to database
+    const newUser = new UserProfile({ username, password, books });
     await newUser.save();
-    // Automatically log in the user after registration (optional)
-    req.session.userId = newUser._id;
-    res.redirect('/profile');
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
 };
 
-// Show login form
-exports.showLoginForm = (req, res) => {
-  res.render('login');
+// update user infromation
+export const updateUser = async (req, res, UserProfile) => 
+{
+	// get userid from params
+    const userId = req.params.id;
+
+    // update the users information and save that to database
+    const updateData = req.body;
+    await UserProfile.findByIdAndUpdate(userId, 
+    		updateData, { new: true }).populate('books');
 };
 
-// Log in a user
-exports.loginUser = async (req, res) => {
-  try {
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) {
-      return res.status(401).send('Invalid email or password');
-    }
-    const isMatch = await user.comparePassword(req.body.password);
-    if (!isMatch) {
-      return res.status(401).send('Invalid email or password');
-    }
-    // Set session or token (depending on your authentication strategy)
-    req.session.userId = user._id;
-    res.redirect('/profile');
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
+// delete user
+export const deleteUser = async (req, res, UserProfile) => 
+{
+	// get userid from params and delete it from database
+    const userId = req.params.id;
+	await UserProfile.findByIdAndDelete(userId);
 };
 
-// Log out a user
-exports.logoutUser = (req, res) => {
-  // Destroy the session
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).send(err.message);
-    }
-    res.redirect('/login');
-  });
-};
-
-// View user profile
-exports.viewUserProfile = async (req, res) => {
-  try {
-    // Assuming you have a session middleware that sets req.session.userId
-    const user = await User.findById(req.session.userId);
-    if (!user) {
-      return res.redirect('/login');
-    }
-    res.render('profile', { user });
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-};
-
-/* 
-Explanation:
-
-Imports:
-
-Book and User: Models imported from bookModel.js and userModel.js.
-bcrypt: For password comparison (if not using methods defined in the model).
-Home Page Controller:
-
-Redirects to the list of books.
-Book Controllers:
-
-listBooks: Fetches all books and renders the index.ejs view.
-showCreateBookForm: Renders the form to create a new book.
-createBook: Saves a new book to the database and redirects to the books list.
-viewBook: Fetches a single book by ID and renders the view.ejs view.
-showEditBookForm: Fetches a book and renders the edit.ejs form.
-updateBook: Updates an existing book and redirects to its detail page.
-deleteBook: Deletes a book and redirects to the books list.
-User Controllers:
-
-showRegisterForm: Renders the registration form.
-registerUser: Creates a new user, saves to the database, and redirects to the profile.
-showLoginForm: Renders the login form.
-loginUser: Authenticates the user and redirects to the profile.
-logoutUser: Logs out the user by destroying the session.
-viewUserProfile: Fetches the logged-in user's profile and renders the profile.ejs view.
-Notes:
-
-Session Management: The controllers assume that session management middleware is set up (e.g., express-session).
-Error Handling: Errors are caught and sent as a 500 response with the error message.
-Authentication Checks: For routes that require authentication (like viewing the profile), checks are made to ensure the user is logged in.
-*/
