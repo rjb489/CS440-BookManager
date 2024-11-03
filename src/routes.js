@@ -1,48 +1,53 @@
-// Code from Chat!
+// imports
+import express from 'express';
+import mongoose from 'mongoose';
+import 
+{
+    getAllBooks, getBookById, createBook, updateBook,
+    deleteBook, getAllUsers, getUserById, createUser,
+    updateUser, deleteUser
+} 
+from './controller.js';
 
-const express = require('express');
+// connect to the database
+mongoose.connect('mongodb://localhost:27017/bookLibraryDB')
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('Failed to connect to MongoDB', err));
+
+// constants
 const router = express.Router();
-const controllers = require('./controllers');
 
-// Home page
-router.get('/', controllers.showHomePage);
+//  book model
+const bookSchema = new mongoose.Schema
+({
+    title: String, name: String, content: String,
+    genre: String, rating: Number, coverImage: String,
+    creationTime: String,
+});
+const Book = mongoose.model('Book', bookSchema);
 
-// Book routes
-router.get('/books', controllers.listBooks);
-router.get('/books/new', controllers.showCreateBookForm);
-router.post('/books/new', controllers.createBook);
-router.get('/books/:id', controllers.viewBook);
-router.get('/books/:id/edit', controllers.showEditBookForm);
-router.post('/books/:id/edit', controllers.updateBook);
-router.post('/books/:id/delete', controllers.deleteBook);
+// user model
+const userProfileSchema = new mongoose.Schema
+({
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    books: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }]
+});
+const UserProfile = mongoose.model('UserProfile', userProfileSchema);
 
-// User routes
-router.get('/register', controllers.showRegisterForm);
-router.post('/register', controllers.registerUser);
-router.get('/login', controllers.showLoginForm);
-router.post('/login', controllers.loginUser);
-router.get('/logout', controllers.logoutUser);
-router.get('/profile', controllers.viewUserProfile);
+// book routes
+router.get('/books', (req, res) => getAllBooks(req, res, Book));
+router.get('/books/:id', (req, res) => getBookById(req, res, Book));
+router.post('/books', (req, res) => createBook(req, res, Book));
+router.put('/books/:id', (req, res) => updateBook(req, res, Book));
+router.delete('/books/:id', (req, res) => deleteBook(req, res, Book));
 
-// Export the router
-module.exports = router;
+// user routes
+router.get('/users', (req, res) => getAllUsers(req, res, UserProfile));
+router.get('/users/:id', (req, res) => getUserById(req, res, UserProfile));
+router.post('/users', (req, res) => createUser(req, res, UserProfile));
+router.put('/users/:id', (req, res) => updateUser(req, res, UserProfile));
+router.delete('/users/:id', (req, res) => deleteUser(req, res, UserProfile));
 
-/*
-Explanation:
-
-Imports:
-
-express: For routing.
-controllers: Importing all controller functions from controllers.js.
-Route Definitions:
-
-Home Page:
-router.get('/', controllers.showHomePage);
-Book Routes:
-Listing all books, creating a new book, viewing, editing, and deleting a book.
-User Routes:
-Registration, login, logout, and viewing the user profile.
-Exporting the Router:
-
-Makes the router available to be used in app.js.
-*/
+// export router
+export default router;
